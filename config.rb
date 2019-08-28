@@ -1,31 +1,3 @@
-# This is a monkey-patch to fix the problem with double-watching
-# symlinked directories
-WATCHED_PATHS = (
-                  Dir["*"] -
-                  %w(source node_modules vendor) +
-                  Dir["source/*"] -
-                  %w(source/current source/next source/learn source/guides)
-                ). select {|f| File.directory?(f) }
-
-class ::Middleman::SourceWatcher
-  # The default source watcher implementation. Watches a directory on disk
-  # and responds to events on changes.
-  def listen!
-    return if @disable_watcher || @listener || @waiting_for_existence
-
-    config = {
-      force_polling: @force_polling
-    }
-
-    config[:wait_for_delay] = @wait_for_delay.try(:to_f) || 0.5
-    config[:latency] = @latency.to_f if @latency
-
-    @listener = ::Listen.to(*WATCHED_PATHS, config, &method(:on_listener_change))
-
-    @listener.start
-  end
-end
-
 require_relative 'lib/site'
 
 # Per-page layout changes:
@@ -199,11 +171,6 @@ activate :external_pipeline,
   command: build? ? 'node ./node_modules/webpack/bin/webpack.js --bail' : 'node ./node_modules/webpack/bin/webpack.js --watch -d',
   source: 'tmp/dist',
   latency: 1
-
-# Development-specific configuration
-configure :development do
-  activate :livereload
-end
 
 begin
   require 'pry-byebug'
