@@ -37,38 +37,6 @@ module Site
         %(<h#{level} id="#{permalink}" class="hd">#{anchor}#{title}</h#{level}>)
       end
 
-      def link(link, title, content)
-        if content.start_with?('api::')
-          _, project, path = content.split('::')
-          link_to_api(project, path, link)
-        elsif link['%{version}']
-          super(link % { version: scope.version }, title, content)
-        else
-          super
-        end
-      end
-
-      def link_to_api(project, path, target)
-        klass = path.gsub('/', '::') if path
-
-        if target.start_with?('#') || target.start_with?('.')
-          content = "#{klass}#{target}"
-
-          link(
-            config.api_anchor_url_template % { project: project, path: path, anchor: anchor(target) },
-            nil, content
-          )
-        else
-          content = ['ROM', *klass, target].join('::')
-          path    = [*path, target].join('/')
-
-          link(
-            config.api_url_template % { project: project, path: path },
-            nil, content
-          )
-        end
-      end
-
       def config
         scope.config
       end

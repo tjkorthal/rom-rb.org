@@ -14,7 +14,7 @@ module Site
     alias_method :to_s, :name
 
     def github_url
-      "https://github.com/rom-rb/#{name}"
+      "https://github.com/#{org}/#{name}"
     end
 
     def rubygems_url
@@ -26,27 +26,27 @@ module Site
     end
 
     def ci_badge
-      "https://img.shields.io/travis/rom-rb/#{name}/master.svg?style=flat"
+      "https://img.shields.io/travis/#{org}/#{name}/master.svg?style=flat"
     end
 
     def codeclimate_url
-      "https://codeclimate.com/github/rom-rb/#{name}"
+      "https://codeclimate.com/github/#{org}/#{name}"
     end
 
     def codeclimate_badge
-      "https://codeclimate.com/github/rom-rb/#{name}/badges/gpa.svg"
+      "https://codeclimate.com/github/#{org}/#{name}/badges/gpa.svg"
     end
 
     def coverage_badge
-      "https://codeclimate.com/github/rom-rb/#{name}/badges/coverage.svg"
+      "https://codeclimate.com/github/#{org}/#{name}/badges/coverage.svg"
     end
 
     def inch_url
-      "http://inch-ci.org/github/rom-rb/#{name}"
+      "http://inch-ci.org/github/#{org}/#{name}"
     end
 
     def inch_badge
-      "http://inch-ci.org/github/rom-rb/#{name}.svg?branch=master&style=flat"
+      "http://inch-ci.org/github/#{org}/#{name}.svg?branch=master&style=flat"
     end
 
     def api_url
@@ -54,7 +54,7 @@ module Site
     end
 
     def api_host_url
-      Site.development? ? 'http://localhost:4000/docs' : 'https://api.rom-rb.org'
+      Site.development? ? 'http://localhost:4000/docs' : "https://api.#{org}.org"
     end
   end
 end

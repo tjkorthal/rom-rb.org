@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'pathname'
 
 $LOAD_PATH.unshift(Pathname('./lib').realpath)
 
-require 'lib/site'
+require 'rom/site'
 
 # Per-page layout changes:
 page '/*.xml', layout: false
@@ -32,7 +34,7 @@ end
 if next?
   set :api_base_url, "http://www.rubydoc.info/#{next? ? 'github/rom-rb' : 'gems'}"
 else
-  set :api_base_url, "https://api.rom-rb.org"
+  set :api_base_url, 'https://api.rom-rb.org'
 end
 
 set :api_url_template, "#{config.api_base_url}/%{project}/ROM/%{path}"
@@ -50,17 +52,17 @@ helpers do
   end
 
   def learn_root_resource
-    sitemap.find_resource_by_destination_path("#{ version }/learn/index.html")
+    sitemap.find_resource_by_destination_path("#{version}/learn/index.html")
   end
 
   def guides_root_resource
-    sitemap.find_resource_by_destination_path("#{ version }/guides/index.html")
+    sitemap.find_resource_by_destination_path("#{version}/guides/index.html")
   end
 
   def sections_as_resources(resource)
     sections = resource.data.sections
     sections.map do |section|
-      destination_path = resource.url + "#{ section }/index.html"
+      destination_path = resource.url + "#{section}/index.html"
       sitemap.find_resource_by_destination_path(destination_path)
     end
   end
@@ -75,14 +77,14 @@ helpers do
 
   def og_description
     if current_page.data.description.nil?
-      "An open-source persistence and mapping toolkit for Ruby built for speed and simplicity."
+      'An open-source persistence and mapping toolkit for Ruby built for speed and simplicity.'
     else
       current_page.data.description
     end
   end
 
   def og_image
-    "http://rom-rb.org/images/logo--card.png"
+    'http://rom-rb.org/images/logo--card.png'
   end
 
   def copyright
@@ -108,27 +110,27 @@ helpers do
   end
 
   def version_variants
-    next_vs = data.versions.show_next ? [["next", "next (#{ data.versions.next })"]] : []
+    next_vs = data.versions.show_next ? [['next', "next (#{data.versions.next})"]] : []
 
     [*data.versions.core.map { |v| [v, v] },
-     ["current", "current (#{ data.versions.current })"],
+     ['current', "current (#{data.versions.current})"],
      *next_vs]
   end
 
-  GH_NEW_ISSUE_URL = "https://github.com/rom-rb/rom-rb.org/issues/new?labels=%{labels}&assignees=%{assignees}&title=%{title}".freeze
+  GH_NEW_ISSUE_URL = 'https://github.com/rom-rb/rom-rb.org/issues/new?labels=%{labels}&assignees=%{assignees}&title=%{title}'
   def feedback_link
     tokens = {
       title: "Feedback on #{URI.encode(head_title)}",
-      labels: "feedback",
-      assignees: "solnic"
+      labels: 'feedback',
+      assignees: 'solnic'
     }
 
-    link_to "Provide feedback!", GH_NEW_ISSUE_URL % tokens, class: "button"
+    link_to 'Provide feedback!', GH_NEW_ISSUE_URL % tokens, class: 'button'
   end
 
-  GH_EDIT_FILE_URL = "https://github.com/rom-rb/rom-rb.org/blob/master%{current_path}".freeze
+  GH_EDIT_FILE_URL = 'https://github.com/rom-rb/rom-rb.org/blob/master%{current_path}'
   def edit_file_link
-    link_to "Edit on GitHub", GH_EDIT_FILE_URL % { current_path: current_source_file}, class: "button"
+    link_to 'Edit on GitHub', GH_EDIT_FILE_URL % { current_path: current_source_file }, class: 'button'
   end
 
   def current_source_file
@@ -147,31 +149,31 @@ set :css_dir, 'assets/stylesheets'
 set :js_dir, 'assets/javascripts'
 
 set :markdown_engine, :redcarpet
-set :markdown, renderer: Site::Markdown::Renderer,
-    tables: true,
-    autolink: true,
-    gh_blockcode: true,
-    fenced_code_blocks: true,
-    with_toc_data: true
+set :markdown, renderer: ROM::Site::Markdown::Renderer,
+               tables: true,
+               autolink: true,
+               gh_blockcode: true,
+               fenced_code_blocks: true,
+               with_toc_data: true
 
 set :disqus_embed_url, 'https://rom-rb-blog.disqus.com/embed.js'
 
 activate :blog,
-  prefix: 'blog',
-  layout: 'blog_article',
-  permalink: '{title}.html',
-  paginate: true,
-  tag_template: 'blog/tag.html'
+         prefix: 'blog',
+         layout: 'blog_article',
+         permalink: '{title}.html',
+         paginate: true,
+         tag_template: 'blog/tag.html'
 
 activate :syntax, css_class: 'syntax'
 
 activate :directory_indexes
 
 activate :external_pipeline,
-  name: :webpack,
-  command: build? ? 'node ./node_modules/webpack/bin/webpack.js --bail' : 'node ./node_modules/webpack/bin/webpack.js --watch -d',
-  source: 'tmp/dist',
-  latency: 1
+         name: :webpack,
+         command: build? ? 'node ./node_modules/webpack/bin/webpack.js --bail' : 'node ./node_modules/webpack/bin/webpack.js --watch -d',
+         source: 'tmp/dist',
+         latency: 1
 
 begin
   require 'pry-byebug'
@@ -185,8 +187,8 @@ after_build do
   begin
     configuration = {
       assume_extension: true,
-      allow_hash_href:  true, # allow `#` in href
-      empty_alt_ignore: true  # allow blank alt tag in images
+      allow_hash_href: true, # allow `#` in href
+      empty_alt_ignore: true # allow blank alt tag in images
     }
     HTMLProofer.check_directory(config[:build_dir], configuration).run
   rescue RuntimeError
