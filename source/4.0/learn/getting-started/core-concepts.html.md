@@ -89,7 +89,7 @@ To learn more about repositories, how to use them and their role in a system
 developed using ROM, check out the
 [Repositories](/%{version}/learn/repositories) section.
 
-^
+^INFO
   Repositories are completely optional and while they provide powerful features
   for encapsulating data access logic, they may not make sense for some 
   simple CRUD applications or one-off scripts.

@@ -24,7 +24,7 @@ which offer lazy loading by default. Since composing data is so quick and easy
 lazy loading is not needed preventing a whole class of issues such as N+1
 query performance problems.
 
-^
+^INFO
   Before you can combine relations an association has to be configured in
   the relations' schema. See [associations](/%{version}/learn/core/associations)
   for more details.
