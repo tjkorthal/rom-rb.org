@@ -1,4 +1,8 @@
-require_relative 'lib/site'
+require 'pathname'
+
+$LOAD_PATH.unshift(Pathname('./lib').realpath)
+
+require 'lib/site'
 
 # Per-page layout changes:
 page '/*.xml', layout: false
@@ -142,11 +146,8 @@ set :layout, 'content'
 set :css_dir, 'assets/stylesheets'
 set :js_dir, 'assets/javascripts'
 
-# MD
-require_relative 'lib/markdown_renderer'
-
 set :markdown_engine, :redcarpet
-set :markdown, renderer: MarkdownRenderer,
+set :markdown, renderer: Site::Markdown::Renderer,
     tables: true,
     autolink: true,
     gh_blockcode: true,
